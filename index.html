@@ -12,7 +12,6 @@
     * {
       box-sizing: border-box;
     }
-
     body {
       margin: 0;
       min-height: 100vh;
@@ -24,16 +23,13 @@
       font-family: Arial, sans-serif;
       color: white;
     }
-
     h1 {
       margin-top: 30px;
       color: white;
     }
-
     a {
       color: white;
     }
-
     .container {
       display: flex;
       flex-direction: column;
@@ -47,7 +43,6 @@
       border-radius: 15px;
       backdrop-filter: blur(8px);
     }
-
     .input-group {
       display: flex;
       flex-direction: column;
@@ -55,13 +50,11 @@
       margin-bottom: 15px;
       width: 100%;
     }
-
     .input-group label {
       font-size: 14px;
       color: #fff;
       margin-bottom: 7px;
     }
-
     .input-group input {
       padding: 12px;
       font-size: 15px;
@@ -73,16 +66,13 @@
       outline: none;
       transition: 0.2s;
     }
-
     .input-group input:focus {
       border-color: #7289da;
       background-color: rgba(255, 255, 255, 0.15);
     }
-
     input::placeholder {
       color: rgba(255, 255, 255, 0.5);
     }
-
     button {
       padding: 12px 30px;
       font-size: 15px;
@@ -93,16 +83,13 @@
       cursor: pointer;
       transition: 0.2s;
     }
-
     button:hover {
       background-color: #4752c4;
     }
-
     button:disabled {
       opacity: 0.6;
       cursor: not-allowed;
     }
-
     .height-cemter {
       display: flex;
       align-items: center;
@@ -110,25 +97,21 @@
       gap: 8px;
       margin: 10px 0 20px;
     }
-
     input[type="checkbox"] {
       width: 20px;
       height: 20px;
       accent-color: #5865f2;
     }
-
     .preview-container {
       width: 100%;
       margin: 15px 0 25px;
       text-align: left;
     }
-
     .preview-title {
       font-size: 14px;
       margin-bottom: 10px;
       color: #b9bbbe;
     }
-
     .discord-preview {
       display: flex;
       gap: 12px;
@@ -137,7 +120,6 @@
       border-radius: 8px;
       min-height: 85px;
     }
-
     .preview-icon {
       width: 45px;
       height: 45px;
@@ -146,19 +128,16 @@
       background: #5865f2;
       object-fit: cover;
     }
-
     .preview-content {
       min-width: 0;
       flex: 1;
     }
-
     .preview-username {
       font-size: 14px;
       font-weight: bold;
       color: #fff;
       margin-bottom: 6px;
     }
-
     .preview-badge {
       display: inline-block;
       font-size: 10px;
@@ -169,7 +148,6 @@
       color: white;
       vertical-align: middle;
     }
-
     .preview-message {
       font-size: 14px;
       color: #dbdee1;
@@ -178,18 +156,15 @@
       line-height: 1.5;
       min-height: 20px;
     }
-
     .preview-empty {
       color: #72767d;
     }
-
     .status {
       color: #ff5555;
       font-size: 18px;
       margin: 15px 0;
       overflow-wrap: anywhere;
     }
-
     @media (max-width: 600px) {
       .container {
         width: 92%;
@@ -199,31 +174,27 @@
   </style>
 </head>
 <body>
-
   <h1>discord night webhooker</h1>
-
   <a href="https://discord.gg/FY3yxKd8rt">開発者サポートサーバー</a>
-
   <div class="container">
-
     <div class="input-group">
       <label for="webhook-url">Webhook</label>
       <input type="text" id="webhook-url" placeholder="Webhook URL">
     </div>
-
+    <div class="input-group">
+      <label for="webhook-name">Webhook Name</label>
+      <input type="text" id="webhook-name" placeholder="Webhook Name">
+    </div>
     <div class="input-group">
       <label for="webhook-icon">Webhook Icon URL</label>
       <input type="text" id="webhook-icon" placeholder="https://example.com/icon.png">
     </div>
-
     <div class="input-group">
       <label for="message">Message</label>
       <input type="text" id="message" placeholder="Message">
     </div>
-
     <div class="preview-container">
       <div class="preview-title">送信前プレビュー</div>
-
       <div class="discord-preview">
         <img
           id="preview-icon"
@@ -231,25 +202,21 @@
           src="https://cdn.discordapp.com/embed/avatars/0.png"
           alt="Webhook Icon"
         >
-
         <div class="preview-content">
           <div class="preview-username">
             Webhook
             <span class="preview-badge">APP</span>
           </div>
-
           <div id="preview-message" class="preview-message preview-empty">
             Message preview...
           </div>
         </div>
       </div>
     </div>
-
     <div class="input-group">
       <label for="send">送信回数</label>
       <input type="text" id="send" placeholder="send">
     </div>
-
     <div class="input-group">
       <label for="start-time">開始時間(分後)</label>
       <input
@@ -259,25 +226,21 @@
         min="0"
       >
     </div>
-
     <div class="height-cemter">
       <input type="checkbox" id="tts-checkbox">
       <label for="tts-checkbox">TTSメッセージ</label>
     </div>
-
     <button id="submit-button">決定</button>
-
   </div>
-
   <script>
     const submitButton = document.getElementById("submit-button");
     const webhookInput = document.getElementById("webhook-url");
+    const webhookNameInput = document.getElementById("webhook-name");
     const iconInput = document.getElementById("webhook-icon");
     const messageInput = document.getElementById("message");
     const previewIcon = document.getElementById("preview-icon");
     const previewMessage = document.getElementById("preview-message");
     const ttsCheckbox = document.getElementById("tts-checkbox");
-
     const defaultIcon = "https://cdn.discordapp.com/embed/avatars/0.png";
 
     webhookInput.addEventListener("input", updatePreview);
@@ -289,11 +252,9 @@
       const message = messageInput.value;
 
       previewIcon.src = iconUrl || defaultIcon;
-
       previewIcon.onerror = function () {
         previewIcon.src = defaultIcon;
       };
-
       previewMessage.textContent = message || "Message preview...";
       previewMessage.classList.toggle("preview-empty", !message);
     }
@@ -305,14 +266,11 @@
         setTimeout(() => {
           let deg = 0;
           let h = Math.random() > 0.5 ? 1 : -1;
-
           setInterval(() => {
             if (deg > 359) deg = 0;
-
             e.style.transform = `rotate(${deg}deg)`;
             deg += h;
           }, Math.floor(Math.random() * 50));
-
         }, Math.floor(Math.random() * 100));
       });
 
@@ -320,6 +278,7 @@
         "url('https://sozaino.site/wp-content/uploads/2022/05/tsuki51.png')";
 
       const webhookUrl = webhookInput.value;
+      const webhookName = webhookNameInput.value.trim() || "NoName";
       const iconUrl = iconInput.value.trim();
       const message = messageInput.value;
       const interval = 1000;
@@ -333,7 +292,6 @@
       if (iconUrl) {
         try {
           const parsedUrl = new URL(iconUrl);
-
           if (parsedUrl.protocol !== "https:" && parsedUrl.protocol !== "http:") {
             return alert("Icon URLが正しくありません");
           }
@@ -352,7 +310,6 @@
 
       try {
         const parsedWebhook = new URL(webhookUrl);
-
         if (
           parsedWebhook.protocol !== "https:" ||
           parsedWebhook.hostname !== "discord.com" &&
@@ -384,14 +341,13 @@
       startMessageDisplay.className = "status";
       startMessageDisplay.textContent =
         "送信が開始されました " + new Date().toLocaleString();
-
       document.querySelector(".container").appendChild(startMessageDisplay);
 
       var sendCount = document.getElementById("send").value;
 
       for (var i = 0; i < sendCount; i++) {
         try {
-          await sendRequest(webhookUrl, message, iconUrl);
+          await sendRequest(webhookUrl, message, iconUrl, webhookName);
         } catch (error) {
           console.error(error);
         } finally {
@@ -403,12 +359,12 @@
       endMessageDisplay.className = "status";
       endMessageDisplay.textContent =
         "送信が終了しました " + new Date().toLocaleString();
-
       document.querySelector(".container").appendChild(endMessageDisplay);
     }
 
-    async function sendRequest(url, message, iconUrl) {
+    async function sendRequest(url, message, iconUrl, webhookName) {
       const payload = {
+        username: webhookName,
         content: message,
         tts: ttsCheckbox.checked
       };
@@ -440,6 +396,5 @@
       return new Promise((resolve) => setTimeout(resolve, ms));
     }
   </script>
-
 </body>
 </html>
