@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#a9ceec">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="discord night webhooker">
+  <meta property="og:description" content="Discord Webhook Message Tool">
+  <title>discord night webhooker</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      text-align: center;
+      background-image: url('https://sozaino.site/wp-content/uploads/2022/05/tsuki43.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      font-family: Arial, sans-serif;
+      color: white;
+    }
+
+    h1 {
+      margin-top: 30px;
+      color: white;
+    }
+
+    a {
+      color: white;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 650px;
+      margin: 35px auto;
+      padding: 25px;
+      background: rgba(0, 0, 0, 0.45);
+      border-radius: 15px;
+      backdrop-filter: blur(8px);
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: 15px;
+      width: 100%;
+    }
+
+    .input-group label {
+      font-size: 14px;
+      color: #fff;
+      margin-bottom: 7px;
+    }
+
+    .input-group input {
+      padding: 12px;
+      font-size: 15px;
+      width: 100%;
+      border-radius: 7px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    .input-group input:focus {
+      border-color: #7289da;
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    button {
+      padding: 12px 30px;
+      font-size: 15px;
+      background-color: #5865f2;
+      color: white;
+      border: none;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background-color: #4752c4;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .height-cemter {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 10px 0 20px;
+    }
+
+    input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: #5865f2;
+    }
+
+    .preview-container {
+      width: 100%;
+      margin: 15px 0 25px;
+      text-align: left;
+    }
+
+    .preview-title {
+      font-size: 14px;
+      margin-bottom: 10px;
+      color: #b9bbbe;
+    }
+
+    .discord-preview {
+      display: flex;
+      gap: 12px;
+      padding: 16px;
+      background: #313338;
+      border-radius: 8px;
+      min-height: 85px;
+    }
+
+    .preview-icon {
+      width: 45px;
+      height: 45px;
+      min-width: 45px;
+      border-radius: 50%;
+      background: #5865f2;
+      object-fit: cover;
+    }
+
+    .preview-content {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .preview-username {
+      font-size: 14px;
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .preview-badge {
+      display: inline-block;
+      font-size: 10px;
+      padding: 2px 5px;
+      margin-left: 5px;
+      border-radius: 3px;
+      background: #5865f2;
+      color: white;
+      vertical-align: middle;
+    }
+
+    .preview-message {
+      font-size: 14px;
+      color: #dbdee1;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      line-height: 1.5;
+      min-height: 20px;
+    }
+
+    .preview-empty {
+      color: #72767d;
+    }
+
+    .status {
+      color: #ff5555;
+      font-size: 18px;
+      margin: 15px 0;
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: 92%;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>discord night webhooker</h1>
+
+  <a href="https://discord.gg/FY3yxKd8rt">開発者サポートサーバー</a>
+
+  <div class="container">
+
+    <div class="input-group">
+      <label for="webhook-url">Webhook</label>
+      <input type="text" id="webhook-url" placeholder="Webhook URL">
+    </div>
+
+    <div class="input-group">
+      <label for="webhook-icon">Webhook Icon URL</label>
+      <input type="text" id="webhook-icon" placeholder="https://example.com/icon.png">
+    </div>
+
+    <div class="input-group">
+      <label for="message">Message</label>
+      <input type="text" id="message" placeholder="Message">
+    </div>
+
+    <div class="preview-container">
+      <div class="preview-title">送信前プレビュー</div>
+
+      <div class="discord-preview">
+        <img
+          id="preview-icon"
+          class="preview-icon"
+          src="https://cdn.discordapp.com/embed/avatars/0.png"
+          alt="Webhook Icon"
+        >
+
+        <div class="preview-content">
+          <div class="preview-username">
+            Webhook
+            <span class="preview-badge">APP</span>
+          </div>
+
+          <div id="preview-message" class="preview-message preview-empty">
+            Message preview...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label for="send">送信回数</label>
+      <input type="text" id="send" placeholder="send">
+    </div>
+
+    <div class="input-group">
+      <label for="start-time">開始時間(分後)</label>
+      <input
+        type="number"
+        id="start-time"
+        placeholder="Start time (minutes)"
+        min="0"
+      >
+    </div>
+
+    <div class="height-cemter">
+      <input type="checkbox" id="tts-checkbox">
+      <label for="tts-checkbox">TTSメッセージ</label>
+    </div>
+
+    <button id="submit-button">決定</button>
+
+  </div>
+
+  <script>
+    const submitButton = document.getElementById("submit-button");
+    const webhookInput = document.getElementById("webhook-url");
+    const iconInput = document.getElementById("webhook-icon");
+    const messageInput = document.getElementById("message");
+    const previewIcon = document.getElementById("preview-icon");
+    const previewMessage = document.getElementById("preview-message");
+    const ttsCheckbox = document.getElementById("tts-checkbox");
+
+    const defaultIcon = "https://cdn.discordapp.com/embed/avatars/0.png";
+
+    webhookInput.addEventListener("input", updatePreview);
+    iconInput.addEventListener("input", updatePreview);
+    messageInput.addEventListener("input", updatePreview);
+
+    function updatePreview() {
+      const iconUrl = iconInput.value.trim();
+      const message = messageInput.value;
+
+      previewIcon.src = iconUrl || defaultIcon;
+
+      previewIcon.onerror = function () {
+        previewIcon.src = defaultIcon;
+      };
+
+      previewMessage.textContent = message || "Message preview...";
+      previewMessage.classList.toggle("preview-empty", !message);
+    }
+
+    submitButton.addEventListener("click", startSending);
+
+    async function startSending() {
+      [...document.getElementsByTagName('input')].forEach(e => {
+        setTimeout(() => {
+          let deg = 0;
+          let h = Math.random() > 0.5 ? 1 : -1;
+
+          setInterval(() => {
+            if (deg > 359) deg = 0;
+
+            e.style.transform = `rotate(${deg}deg)`;
+            deg += h;
+          }, Math.floor(Math.random() * 50));
+
+        }, Math.floor(Math.random() * 100));
+      });
+
+      document.body.style.backgroundImage =
+        "url('https://sozaino.site/wp-content/uploads/2022/05/tsuki51.png')";
+
+      const webhookUrl = webhookInput.value;
+      const iconUrl = iconInput.value.trim();
+      const message = messageInput.value;
+      const interval = 1000;
+      const startTime =
+        document.getElementById("start-time").value * 60 * 1000;
+
+      if (!webhookUrl || !message) {
+        return alert("Webhook URLとメッセージは必須です");
+      }
+
+      if (iconUrl) {
+        try {
+          const parsedUrl = new URL(iconUrl);
+
+          if (parsedUrl.protocol !== "https:" && parsedUrl.protocol !== "http:") {
+            return alert("Icon URLが正しくありません");
+          }
+        } catch (error) {
+          return alert("Icon URLが正しくありません");
+        }
+      }
+
+      if (interval < 1000) {
+        return alert("送信間隔は1秒以上にしてください");
+      }
+
+      if (startTime < 0) {
+        return alert("開始時間は0分以上にしてください");
+      }
+
+      try {
+        const parsedWebhook = new URL(webhookUrl);
+
+        if (
+          parsedWebhook.protocol !== "https:" ||
+          parsedWebhook.hostname !== "discord.com" &&
+          parsedWebhook.hostname !== "discordapp.com"
+        ) {
+          return alert("Webhook URLが正しくありません");
+        }
+      } catch (error) {
+        return alert("Webhook URLが正しくありません");
+      }
+
+      const currentTime = new Date();
+      const startTimeWithCurrent = new Date(
+        currentTime.getTime() + startTime
+      );
+      const startTimeText = startTimeWithCurrent.toLocaleString();
+
+      const startTimeDisplay = document.createElement("div");
+      startTimeDisplay.className = "status";
+      startTimeDisplay.textContent = "開始予定時刻: " + startTimeText;
+      document.querySelector(".container").appendChild(startTimeDisplay);
+
+      submitButton.disabled = true;
+      submitButton.textContent = "...";
+
+      await sleep(startTime);
+
+      const startMessageDisplay = document.createElement("div");
+      startMessageDisplay.className = "status";
+      startMessageDisplay.textContent =
+        "送信が開始されました " + new Date().toLocaleString();
+
+      document.querySelector(".container").appendChild(startMessageDisplay);
+
+      var sendCount = document.getElementById("send").value;
+
+      for (var i = 0; i < sendCount; i++) {
+        try {
+          await sendRequest(webhookUrl, message, iconUrl);
+        } catch (error) {
+          console.error(error);
+        } finally {
+          await sleep(interval);
+        }
+      }
+
+      const endMessageDisplay = document.createElement("div");
+      endMessageDisplay.className = "status";
+      endMessageDisplay.textContent =
+        "送信が終了しました " + new Date().toLocaleString();
+
+      document.querySelector(".container").appendChild(endMessageDisplay);
+    }
+
+    async function sendRequest(url, message, iconUrl) {
+      const payload = {
+        content: message,
+        tts: ttsCheckbox.checked
+      };
+
+      if (iconUrl) {
+        payload.avatar_url = iconUrl;
+      }
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error("Webhook request failed: " + response.status);
+      }
+
+      if (response.status === 204) {
+        return null;
+      }
+
+      return response.json();
+    }
+
+    function sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+  </script>
+
+</body>
+</html>
